@@ -1,13 +1,8 @@
-import test from "node:test";
 import assert from "node:assert/strict";
-import {
-  GRID_SIZE,
-  queueDirection,
-  spawnFood,
-  step,
-} from "./snake-logic.js";
+import test from "node:test";
+import { GRID_SIZE, queueDirection, spawnFood, step } from "../lib/snake-logic.js";
 
-test("moves one cell in current direction", () => {
+test("moves one cell in the current direction", () => {
   const state = {
     snake: [{ x: 3, y: 3 }],
     direction: "right",
@@ -17,17 +12,15 @@ test("moves one cell in current direction", () => {
     gameOver: false,
     paused: false,
   };
+
   const next = step(state, GRID_SIZE, () => 0);
   assert.deepEqual(next.snake[0], { x: 4, y: 3 });
   assert.equal(next.gameOver, false);
 });
 
-test("grows and increments score when eating food", () => {
+test("eating food grows snake and increments score", () => {
   const state = {
-    snake: [
-      { x: 2, y: 2 },
-      { x: 1, y: 2 },
-    ],
+    snake: [{ x: 2, y: 2 }, { x: 1, y: 2 }],
     direction: "right",
     nextDirection: "right",
     food: { x: 3, y: 2 },
@@ -35,13 +28,14 @@ test("grows and increments score when eating food", () => {
     gameOver: false,
     paused: false,
   };
+
   const next = step(state, GRID_SIZE, () => 0);
   assert.equal(next.snake.length, 3);
   assert.equal(next.score, 1);
   assert.notEqual(next.food, null);
 });
 
-test("wall collision sets game over", () => {
+test("wall collision ends the game", () => {
   const state = {
     snake: [{ x: GRID_SIZE - 1, y: 1 }],
     direction: "right",
@@ -51,11 +45,12 @@ test("wall collision sets game over", () => {
     gameOver: false,
     paused: false,
   };
+
   const next = step(state, GRID_SIZE, () => 0);
   assert.equal(next.gameOver, true);
 });
 
-test("self collision sets game over", () => {
+test("self collision ends the game", () => {
   const state = {
     snake: [
       { x: 3, y: 3 },
@@ -70,6 +65,7 @@ test("self collision sets game over", () => {
     gameOver: false,
     paused: false,
   };
+
   const next = step(state, GRID_SIZE, () => 0);
   assert.equal(next.gameOver, true);
 });
@@ -80,11 +76,12 @@ test("food placement avoids snake body", () => {
     { x: 1, y: 0 },
     { x: 2, y: 0 },
   ];
+
   const food = spawnFood(snake, 3, () => 0);
   assert.deepEqual(food, { x: 0, y: 1 });
 });
 
-test("prevents immediate reverse direction", () => {
+test("cannot queue immediate reverse direction", () => {
   const state = {
     snake: [{ x: 1, y: 1 }],
     direction: "right",
@@ -94,6 +91,7 @@ test("prevents immediate reverse direction", () => {
     gameOver: false,
     paused: false,
   };
+
   const next = queueDirection(state, "left");
   assert.equal(next.nextDirection, "right");
 });
