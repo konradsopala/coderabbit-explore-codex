@@ -1,46 +1,50 @@
-# Classic Snake
+# Snake (Next.js Rewrite)
 
-A minimal browser-based implementation of the classic Snake game.
+Classic Snake implemented as a minimal Next.js app using the App Router.
 
 ## How the game works
 
-- The board is a fixed 20x20 grid.
-- The snake moves one cell per tick.
+- Board size: fixed `20x20` grid.
+- Tick loop: snake advances one cell every tick.
 - Controls:
-  - Keyboard: Arrow keys or WASD to move
-  - `Space` to pause/resume
-  - `R` to restart
-  - On-screen arrow buttons for mobile/touch
-- Eating food increases snake length and score by 1.
-- The game ends if the snake hits a wall or its own body.
-- Use the **Restart** button (or `R`) to start over.
+  - Keyboard: Arrow keys or `WASD`
+  - `Space`: pause/resume
+  - `R`: restart
+  - On-screen directional buttons for touch/mobile
+- Eating food increases snake length and score by `1`.
+- Game over occurs on wall collision or self collision.
+- Restart resets snake, direction, score, and food.
 
 ## Run locally
 
-### Option 1: quick static server
-
-From the repository root:
+1. Install dependencies:
 
 ```bash
-python3 -m http.server 5173
+npm install
 ```
 
-Then open:
+2. Start development server:
 
-- `http://localhost:5173`
+```bash
+npm run dev
+```
 
-### Option 2: run tests
+3. Open:
+
+- [http://localhost:3000](http://localhost:3000)
+
+## Test core game logic
 
 ```bash
 npm test
 ```
 
-This runs the core game-logic tests (movement, growth, collisions, food placement).
+The tests cover movement, growth, collisions, food placement, and direction reversal rules.
 
-## Project files
+## Structure
 
-- `index.html`: page shell and controls
-- `styles.css`: minimal styling
-- `snake.js`: browser game loop + rendering + input handling
-- `snake-logic.js`: deterministic game state logic
-- `snake-logic.test.mjs`: tests for core logic
+- `app/page.js`: page entry
+- `app/components/SnakeGame.jsx`: client game UI + input + tick loop
+- `app/globals.css`: minimal styling
+- `lib/snake-logic.js`: deterministic game-state logic
+- `tests/snake-logic.test.mjs`: unit tests for core logic
